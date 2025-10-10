@@ -1,0 +1,6 @@
+# Directory exclusions
+.venv/
+__pycache__/
+*egg-info/
+
+# File exclusions
