@@ -2,6 +2,7 @@ import math
 from enum import Enum
 from typing import List, Tuple
 from .coordinates import is_valid_coordinate, get_coordinate_distance
+from .errors import CoordinateError
 
 class ShipType(Enum):
     CARRIER = "Carrier"
@@ -21,10 +22,10 @@ class Ship():
         sc_valid = is_valid_coordinate(stern_coord)
 
         if not bc_valid:
-            raise ValueError(f"Bow coordinate invalid: {bow_coord}")
+            raise CoordinateError(f"Invalid bow coordinate: {bow_coord}")
         
         if not sc_valid:
-            raise ValueError(f"Stern coordinate invalid: {stern_coord}")
+            raise CoordinateError(f"Invalid stern coordinate: {stern_coord}")
 
         distance_between_coordinates = get_coordinate_distance(bow_coord, stern_coord)
 

@@ -6,7 +6,9 @@ class BoardType(Enum):
 
 class CoordinateStatus(Enum):
     EMPTY = "~"
-    OCCUPIED = "!"
+    OCCUPIED = "^"
+    MISS = "O"
+    HIT = "X"
 
 class Board:
     def __init__(self, board_type: BoardType):
