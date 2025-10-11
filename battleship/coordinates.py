@@ -49,6 +49,7 @@ def get_coordinate_distance(bow_coord: Tuple[str, int], stern_coord: Tuple[str, 
     except ValueError:
         return False
     
+    # finding distance using Eucladian distance formula; must add one to returned distance to be end-point inclusive
     distance = math.dist((int_bow_alpha, bn_coord), (int_stern_alpha, sn_coord))
 
     return distance
