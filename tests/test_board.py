@@ -1,10 +1,18 @@
 import unittest
-from battleship.board import Board, FriendlyBoard, EnemyBoard, CoordinateStatus
+from battleship.board import Board, FriendlyBoard, EnemyBoard, CoordinateStatus, BoardType
 from battleship.player import Player
 
 class BoardTests(unittest.TestCase):
     def test_board_definition(self):
-        pass
+        test_player = Player("test")
+        test_data = [
+            (Board(BoardType.FRIENDLY, test_player).__str__(), "Friendly board for test"),
+            (FriendlyBoard(test_player).__str__(), "Friendly board for test"),
+            (EnemyBoard(test_player).__str__(), "Enemy board for test")
+        ]
+
+        for case in test_data:
+            self.assertEqual(case[0], case[1], f"{case[0]} != {case[1]}")
 
 
     def test_coordinate_availability(self):

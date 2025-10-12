@@ -151,7 +151,7 @@ class Board:
         return all_empty
 
     def __str__(self):
-        return f""
+        return f"{self.board_type.value} board for {self.player.player_name}"
 
 class FriendlyBoard(Board):
     def __init__(self, player: Player):
