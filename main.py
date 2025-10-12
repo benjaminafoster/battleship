@@ -1,8 +1,10 @@
 from battleship.ships import Carrier, Battleship, Cruiser, Submarine, Destroyer
-from battleship.board import FriendlyBoard
+from battleship.board import FriendlyBoard, CoordinateStatus
 from battleship.targeting import commit_shot
+from battleship.player import Player
 
-dummy_board = FriendlyBoard()
+test_player = Player("test")
+dummy_board = FriendlyBoard(test_player)
 
 carrier = Carrier()
 bow_coord = ("A", 1)
@@ -25,7 +27,7 @@ db_coord = ("A", 5)
 ds_coord = ("B", 5)
 
 
-carrier.position_ship(dummy_board, bow_coord, stern_coord)
+""" carrier.position_ship(dummy_board, bow_coord, stern_coord)
 battleship.position_ship(dummy_board, bb_coord, bs_coord)
 cruiser.position_ship(dummy_board, cb_coord, cs_coord)
 submarine.position_ship(dummy_board, sb_coord, ss_coord)
@@ -35,4 +37,9 @@ print(carrier)
 print(battleship)
 print(cruiser)
 print(submarine)
-print(destroyer)
+print(destroyer) """
+
+coords = [("A", 3), ("A", 4), ("A", 5)]
+print(dummy_board.get_board_availability(coords))
+dummy_board.coordinates["A"][4] = CoordinateStatus.OCCUPIED
+print(dummy_board.get_board_availability(coords))

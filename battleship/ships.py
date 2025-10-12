@@ -2,7 +2,7 @@ import math
 from enum import Enum
 from typing import List, Tuple
 from .coordinates import is_valid_coordinate, get_coordinate_distance
-from .errors import CoordinateError
+from .errors import CoordinateError, CoordinateAvailabilityError
 from .board import Board
 
 class ShipType(Enum):
@@ -33,9 +33,15 @@ class Ship():
         if distance_between_coordinates != float(self.length) - 1:
             raise Exception(f"Coordinates and ship length mismatch; coordinates must span {self.length} units for a {self.ship_type.value}")
         
-        self.ship_coordinates = self.get_full_coordinates(bow_coord, stern_coord)
+        full_coordinates = self.get_full_coordinates(bow_coord, stern_coord)
 
-        #TODO: Create logic to confirm board availability and actual board updates
+        board_availability = friendly_board.get_board_availability(full_coordinates)
+
+        if board_availability:
+            self.ship_coordinates = full_coordinates
+        else:
+            raise CoordinateAvailabilityError()
+
     
     def get_full_coordinates(self, bow_coord: Tuple[str,int], stern_coord: Tuple[str,int]) -> List[Tuple[str,int]]:
         alpha_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]

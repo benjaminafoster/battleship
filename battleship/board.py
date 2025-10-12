@@ -1,8 +1,10 @@
 from enum import Enum
+from typing import List, Tuple
+from .player import Player
 
 class BoardType(Enum):
-    FRIENDLY = "friendly"
-    ENEMY = "enemy"
+    FRIENDLY = "Friendly"
+    ENEMY = "Enemy"
 
 class CoordinateStatus(Enum):
     EMPTY = "~"
@@ -11,7 +13,8 @@ class CoordinateStatus(Enum):
     HIT = "X"
 
 class Board:
-    def __init__(self, board_type: BoardType):
+    def __init__(self, board_type: BoardType, player: Player):
+        self.player = player
         self.board_type = board_type
         self.coordinates = {
             'A': {
@@ -135,11 +138,25 @@ class Board:
                 9: CoordinateStatus.EMPTY
             }
         }
+    
+    def get_board_availability(self, coord_list: List[Tuple[str, int]]) -> bool:
+        all_empty = True
+        for coord in coord_list:
+            # check status of coordinate
+            coord_status = self.coordinates[coord[0]][coord[1]]
+            if coord_status == CoordinateStatus.OCCUPIED:
+                all_empty = False
+                break
+        
+        return all_empty
+
+    def __str__(self):
+        return f""
 
 class FriendlyBoard(Board):
-    def __init__(self):
-        super().__init__(BoardType.FRIENDLY)
+    def __init__(self, player: Player):
+        super().__init__(BoardType.FRIENDLY, player)
 
 class EnemyBoard(Board):
-    def __init__(self):
-        super().__init__(BoardType.ENEMY)
+    def __init__(self, player: Player):
+        super().__init__(BoardType.ENEMY, player)
