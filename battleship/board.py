@@ -140,15 +140,13 @@ class Board:
         }
     
     def get_board_availability(self, coord_list: List[Tuple[str, int]]) -> bool:
-        all_empty = True
         for coord in coord_list:
             # check status of coordinate
             coord_status = self.coordinates[coord[0]][coord[1]]
             if coord_status == CoordinateStatus.OCCUPIED:
-                all_empty = False
-                break
+                return False
         
-        return all_empty
+        return True
 
     def __str__(self):
         return f"{self.board_type.value} board for {self.player.player_name}"

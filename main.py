@@ -39,7 +39,4 @@ print(cruiser)
 print(submarine)
 print(destroyer) """
 
-coords = [("A", 3), ("A", 4), ("A", 5)]
-print(dummy_board.get_board_availability(coords))
-dummy_board.coordinates["A"][4] = CoordinateStatus.OCCUPIED
-print(dummy_board.get_board_availability(coords))
+

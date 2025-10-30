@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Tuple
 from .coordinates import is_valid_coordinate, get_coordinate_distance
 from .errors import CoordinateError, CoordinateAvailabilityError
-from .board import Board
+from .board import FriendlyBoard, CoordinateStatus
 
 class ShipType(Enum):
     CARRIER = "Carrier"
@@ -18,7 +18,7 @@ class Ship():
         self.ship_type: ShipType = ship_type
         self.ship_coordinates: List[Tuple[str,int]]  = []
 
-    def position_ship(self, friendly_board: Board, bow_coord: Tuple[str,int], stern_coord: Tuple[str,int]):
+    def position_ship(self, friendly_board: FriendlyBoard, bow_coord: Tuple[str,int], stern_coord: Tuple[str,int]):
         bc_valid = is_valid_coordinate(bow_coord)
         sc_valid = is_valid_coordinate(stern_coord)
 
@@ -39,6 +39,8 @@ class Ship():
 
         if board_availability:
             self.ship_coordinates = full_coordinates
+            for coord in self.ship_coordinates:
+                friendly_board.coordinates[coord[0]][coord[1]] = CoordinateStatus.OCCUPIED
         else:
             raise CoordinateAvailabilityError()
 
