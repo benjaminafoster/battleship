@@ -1,17 +1,27 @@
 from enum import Enum
 from typing import List, Tuple
 from .player import Player
-from .coordinates import Coordinate
+from .ships import Ship
+from .coordinates import Coordinate, get_coordinate_distance
 
 class BoardType(Enum):
     FRIENDLY = "Friendly"
     ENEMY = "Enemy"
+
 
 class CoordinateStatus(Enum):
     EMPTY = "~"
     OCCUPIED = "^"
     MISS = "O"
     HIT = "X"
+
+
+class ShipPlacementError(Exception):
+    def __init__(self, ship: Ship, message="Ship placement error"):
+        self.ship = ship
+        self.message = "{}: {}".format(message, str(self.ship))
+        super().__init__(self.message)
+
 
 class Board:
     def __init__(self, board_type: BoardType, player: Player):
@@ -140,15 +150,37 @@ class Board:
             }
         }
     
-    def place_ship(self, bow_coord: Coordinate, stern_coord: Coordinate):
-        pass
+    def place_ship(self, ship: Ship, b_coord: Coordinate, s_coord: Coordinate):
+        coord_distance = get_coordinate_distance(b_coord, s_coord)
 
-    def get_board_availability(self, coord_list: List[Tuple[str, int]]) -> bool:
-        for coord in coord_list:
-            # check status of coordinate
-            coord_status = self.coordinates[coord[0]][coord[1]]
-            if coord_status == CoordinateStatus.OCCUPIED:
-                return False
+        # check that coordinate distance equals ship length
+        if ship.length != coord_distance + 1:
+            raise ShipPlacementError(ship, "Ship length ({}) != Coord distance ({})".format(float(ship.length), coord_distance + 1))
+
+        # get full list of coordinates between bow and stern
+        temp_coord_list: List[Coordinate] = []
+        if b_coord.alpha == s_coord.alpha:
+            num_min = min(b_coord.num, s_coord.num)
+            num_max = max(b_coord.num, s_coord.num)
+            for i in range(num_min, num_max + 1):
+                temp_coord_list.append(Coordinate(b_coord.alpha, i))
+        elif b_coord.num == s_coord.num:
+            alpha_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+            b_alpha_index = alpha_list.index(b_coord.alpha)
+            s_alpha_index = alpha_list.index(s_coord.alpha)
+            alpha_min = min(b_alpha_index, s_alpha_index)
+            alpha_max = max(b_alpha_index, s_alpha_index)
+            for i in range(alpha_min, alpha_max + 1):
+                temp_coord_list.append(Coordinate(alpha_list[i], b_coord.num))
+
+        # check board availability for each coordinate
+
+        # register all coordinates as OCCUPIED on board
+
+    def get_coord_availability(self, coord: Coordinate) -> bool:
+        coord_status = self.coordinates[coord.alpha][coord.num]
+        if coord_status == CoordinateStatus.OCCUPIED:
+            return False
         
         return True
 
