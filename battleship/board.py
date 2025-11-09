@@ -23,6 +23,13 @@ class ShipPlacementError(Exception):
         super().__init__(self.message)
 
 
+class CoordinateAvailabilityError(Exception):
+    def __init__(self, coord: Coordinate, message="Coordinate availability error"):
+        self.coord = coord
+        self.message = "{}: {}".format(message, str(coord))
+        super().__init__(self.message)
+
+
 class Board:
     def __init__(self, board_type: BoardType, player: Player):
         self.player = player
@@ -174,8 +181,13 @@ class Board:
                 temp_coord_list.append(Coordinate(alpha_list[i], b_coord.num))
 
         # check board availability for each coordinate
+        for coord in temp_coord_list:
+            if not self.get_coord_availability(coord):
+                raise CoordinateAvailabilityError(coord)
 
         # register all coordinates as OCCUPIED on board
+        for coord in temp_coord_list:
+            self.coordinates[coord.alpha][coord.num] = CoordinateStatus.OCCUPIED
 
     def get_coord_availability(self, coord: Coordinate) -> bool:
         coord_status = self.coordinates[coord.alpha][coord.num]
