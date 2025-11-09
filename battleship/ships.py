@@ -1,8 +1,8 @@
 import math
 from enum import Enum
 from typing import List, Tuple
-from .coordinates import is_valid_coordinate, get_coordinate_distance
-from .errors import CoordinateError, CoordinateAvailabilityError
+from .coordinates import is_valid_coordinate, get_coordinate_distance, CoordinateError
+from .errors import CoordinateAvailabilityError
 from .board import FriendlyBoard, CoordinateStatus
 
 class ShipType(Enum):

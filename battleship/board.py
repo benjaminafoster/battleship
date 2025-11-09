@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List, Tuple
 from .player import Player
+from .coordinates import Coordinate
 
 class BoardType(Enum):
     FRIENDLY = "Friendly"
@@ -139,6 +140,9 @@ class Board:
             }
         }
     
+    def place_ship(self, bow_coord: Coordinate, stern_coord: Coordinate):
+        pass
+
     def get_board_availability(self, coord_list: List[Tuple[str, int]]) -> bool:
         for coord in coord_list:
             # check status of coordinate

@@ -1,6 +1,25 @@
 import math
 from typing import Tuple
 
+
+class Coordinate:
+    def __init__(self, alpha_coord: str, num_coord: int):
+        self.alpha_coord = alpha_coord.lower()
+        self.num_coord = num_coord
+
+        self.validate_coordinate()
+
+    def validate_coordinate(self):
+        alpha_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+
+        if self.alpha_coord not in alpha_list:
+            raise CoordinateError(self)
+        
+    def __str__(self):
+        return "Coordinate(alpha_coord={}, num_coord={})".format(self.alpha_coord, self.num_coord)
+
+
+
 def is_valid_coordinate(coordinate: Tuple[str,int]) -> bool:
     alpha_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
     alpha_coord = coordinate[0]
@@ -53,3 +72,9 @@ def get_coordinate_distance(bow_coord: Tuple[str, int], stern_coord: Tuple[str, 
     distance = math.dist((int_bow_alpha, bn_coord), (int_stern_alpha, sn_coord))
 
     return distance
+
+class CoordinateError(Exception):
+    def __init__(self, coord: Coordinate, message="Invalid coordinate provided"):
+        self.coord = coord
+        self.message = "{}: {}".format(message, str(coord))
+        super().__init__(self.message)
