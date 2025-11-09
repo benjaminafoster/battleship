@@ -35,7 +35,7 @@ class Board:
         self.player = player
         self.board_type = board_type
         self.coordinates = {
-            'A': {
+            'a': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -47,7 +47,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'B': {
+            'b': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -59,7 +59,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'C': {
+            'c': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -71,7 +71,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'D': {
+            'd': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -83,7 +83,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'E': {
+            'e': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -95,7 +95,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'F': {
+            'f': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -107,7 +107,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'G': {
+            'g': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -119,7 +119,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'H': {
+            'h': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -131,7 +131,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'I': {
+            'i': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -143,7 +143,7 @@ class Board:
                 8: CoordinateStatus.EMPTY,
                 9: CoordinateStatus.EMPTY
             },
-            'J': {
+            'j': {
                 0: CoordinateStatus.EMPTY,
                 1: CoordinateStatus.EMPTY,
                 2: CoordinateStatus.EMPTY,
@@ -185,9 +185,10 @@ class Board:
             if not self.get_coord_availability(coord):
                 raise CoordinateAvailabilityError(coord)
 
-        # register all coordinates as OCCUPIED on board
+        # register all coordinates as OCCUPIED on board and add to ship coordinates list
         for coord in temp_coord_list:
             self.coordinates[coord.alpha][coord.num] = CoordinateStatus.OCCUPIED
+            ship.ship_coordinates.append(coord)
 
     def get_coord_availability(self, coord: Coordinate) -> bool:
         coord_status = self.coordinates[coord.alpha][coord.num]
