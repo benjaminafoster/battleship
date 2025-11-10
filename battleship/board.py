@@ -5,8 +5,8 @@ from .ships import Ship
 from .coordinates import Coordinate, get_coordinate_distance
 
 class BoardType(Enum):
-    FRIENDLY = "Friendly"
-    ENEMY = "Enemy"
+    SHIPS = "Ships"
+    TARGETING = "Targeting"
 
 
 class CoordinateStatus(Enum):
@@ -191,13 +191,17 @@ class Board:
             ship.ship_coordinates.append(coord)
 
     def get_coord_availability(self, coord: Coordinate) -> bool:
-        coord_status = self.coordinates[coord.alpha][coord.num]
+        coord_status = self.get_coord_status(coord)
         if coord_status == CoordinateStatus.OCCUPIED:
             return False
         
         return True
+    
+    def get_coord_status(self, coord:Coordinate) -> CoordinateStatus:
+        return self.coordinates[coord.alpha][coord.num]
 
     def render_board(self):
+        print("\n{} {} Board".format(self.player.name, self.board_type.value))
         print("  0 1 2 3 4 5 6 7 8 9")
         for key in self.coordinates.keys():
             line_str = "{}".format(key)
@@ -208,14 +212,14 @@ class Board:
             
 
     def __str__(self):
-        return f"{self.board_type.value} board for {self.player.player_name}"
+        return f"{self.board_type.value} board for {self.player.name}"
     
 
 
-class FriendlyBoard(Board):
+class ShipsBoard(Board):
     def __init__(self, player: Player):
-        super().__init__(BoardType.FRIENDLY, player)
+        super().__init__(BoardType.SHIPS, player)
 
-class EnemyBoard(Board):
+class TargetingBoard(Board):
     def __init__(self, player: Player):
-        super().__init__(BoardType.ENEMY, player)
+        super().__init__(BoardType.TARGETING, player)

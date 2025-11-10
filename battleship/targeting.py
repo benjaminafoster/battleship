@@ -1,28 +1,29 @@
 from enum import Enum
 from typing import Tuple
-from .board import Board, CoordinateStatus
-from .coordinates import is_valid_coordinate
+from .board import Board, CoordinateStatus, ShipsBoard, TargetingBoard
+from .coordinates import Coordinate
 
-def commit_shot(target_board: Board, coordinate: Tuple[str, int]) -> CoordinateStatus:
-    is_valid = is_valid_coordinate(coordinate)
-
-    if not is_valid:
-        raise ValueError(f"{coordinate} is not a vaild coordinate")
-    
-    alpha_val = coordinate[0]
-    num_val = coordinate[1]
+def commit_shot(targeting: TargetingBoard, opponent: ShipsBoard, coordinate: Coordinate) -> CoordinateStatus:
 
     try:
-        coord_status = target_board.coordinates[alpha_val][num_val]
+        coord_status = opponent.get_coord_status(coordinate)
     except Exception as e:
         raise Exception(f"Unknown error: {e}")
 
     if coord_status == CoordinateStatus.EMPTY:
-        target_board.coordinates[alpha_val][num_val] = CoordinateStatus.MISS
+        opponent.coordinates[coordinate.alpha][coordinate.num] = CoordinateStatus.MISS
+        targeting.coordinates[coordinate.alpha][coordinate.num] = CoordinateStatus.MISS
         return CoordinateStatus.MISS
     elif coord_status == CoordinateStatus.OCCUPIED:
-        target_board.coordinates[alpha_val][num_val] = CoordinateStatus.HIT
+        opponent.coordinates[coordinate.alpha][coordinate.num] = CoordinateStatus.HIT
+        targeting.coordinates[coordinate.alpha][coordinate.num] = CoordinateStatus.HIT
         return CoordinateStatus.HIT
     else:
-        raise CoordAlreadyGuessedError()
+        raise CoordAlreadyGuessedError(coordinate)
+    
+
+class CoordAlreadyGuessedError(Exception):
+    def __init__(self, coordinate: Coordinate, message = "Coordinate already guessed"):
+        self.message = "{}: {}".format(message, str(coordinate))
+        super().__init__(self.message)
 
