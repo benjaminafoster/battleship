@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Tuple
 from .board import Board, CoordinateStatus
 from .coordinates import is_valid_coordinate
-from .errors import CoordAlreadyGuessedError
 
 def commit_shot(target_board: Board, coordinate: Tuple[str, int]) -> CoordinateStatus:
     is_valid = is_valid_coordinate(coordinate)

@@ -11,7 +11,7 @@ class BoardType(Enum):
 
 class CoordinateStatus(Enum):
     EMPTY = "~"
-    OCCUPIED = "^"
+    OCCUPIED = "$"
     MISS = "O"
     HIT = "X"
 
@@ -197,8 +197,20 @@ class Board:
         
         return True
 
+    def render_board(self):
+        print("  0 1 2 3 4 5 6 7 8 9")
+        for key in self.coordinates.keys():
+            line_str = "{}".format(key)
+            for value in self.coordinates[key].values():
+                line_str += " {}".format(value.value)
+            print(line_str)
+        
+            
+
     def __str__(self):
         return f"{self.board_type.value} board for {self.player.player_name}"
+    
+
 
 class FriendlyBoard(Board):
     def __init__(self, player: Player):
